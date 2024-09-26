@@ -24,7 +24,7 @@ inputs:
     required: false
   db_pass:
     description: "The database password."
-    required: false
+    required: true
   db_auth_db:
     description: "The authentication database for MongoDB."
     required: false
