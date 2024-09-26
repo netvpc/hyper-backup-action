@@ -131,10 +131,13 @@ else
     exit 1
 fi
 
+# Display the database type and name being backed up
+echo "🔄 ${INPUT_DB_TYPE} 데이터베이스 백업을 시작합니다: ${INPUT_DB_NAME}"
+
 # Execute the backup command
-echo "🏃‍♂️ 실행 중인 백업 명령어..."
+echo "🏃‍♂️ 꽉 잡으세요"
 if ! bash -c "$BACKUP_CMD"; then
-    echo "😔 백업 명령 실행 중 오류 발생"
+    echo "😔 ${INPUT_DB_TYPE} 데이터베이스의 백업 명령 실행 중 오류 발생: ${INPUT_DB_NAME}"
     exit 1
 fi
 
