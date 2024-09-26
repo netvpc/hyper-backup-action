@@ -87,4 +87,4 @@ inputs:
 
 runs:
   using: 'docker'
-  image: 'ghcr.io/netvpc/hyper-backup-action:latest'
+  image: 'docker://ghcr.io/netvpc/hyper-backup-action:latest'
