@@ -2,6 +2,9 @@
 name: "Hyper Backup with Rclone Upload"
 description: "This GitHub Action backs up databases or directories and uploads them to a remote storage using Rclone."
 author: "NavyStack"
+branding:
+  icon: "archive"
+  color: "blue"
 inputs:
   db_type:
     description: "The type of the database (mysql, mongo, postgres)."
