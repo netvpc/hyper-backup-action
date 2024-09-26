@@ -1,0 +1,87 @@
+# action.yml
+name: "Hyper Backup with Rclone Upload"
+description: "This GitHub Action backs up databases or directories and uploads them to a remote storage using Rclone."
+author: "NavyStack"
+inputs:
+  db_type:
+    description: "The type of the database (mysql, mongo, postgres)."
+    required: true
+  db_user:
+    description: "The database user."
+    required: true
+  db_name:
+    description: "The database name."
+    required: true
+  db_host:
+    description: "The database host."
+    required: false
+    default: "localhost"
+  db_port:
+    description: "The database port."
+    required: false
+  db_pass:
+    description: "The database password."
+    required: false
+  db_auth_db:
+    description: "The authentication database for MongoDB."
+    required: false
+    default: "admin"
+  args:
+    description: 'Additional arguments with backup command if you want to pass'
+    required: false
+  backup_type:
+    description: "The type of backup to perform (db or directory)."
+    required: true
+    default: "db"
+  dirpath:
+    description: "The directory path to back up."
+    required: false
+  remote:
+    description: "The remote storage type for rclone (s3, r2, gdrive)."
+    required: false
+  rclone_s3_access_key_id:
+    description: "S3 access key ID for rclone."
+    required: false
+  rclone_s3_secret_access_key:
+    description: "S3 secret access key for rclone."
+    required: false
+  rclone_s3_region:
+    description: "S3 region for rclone."
+    required: false
+  rclone_s3_endpoint:
+    description: "S3 endpoint for rclone."
+    required: false
+  rclone_s3_acl:
+    description: "S3 ACL for rclone."
+    required: false
+  rclone_r2_access_key_id:
+    description: "R2 access key ID for rclone."
+    required: false
+  rclone_r2_secret_access_key:
+    description: "R2 secret access key for rclone."
+    required: false
+  rclone_r2_region:
+    description: "R2 region for rclone."
+    required: false
+  rclone_r2_endpoint:
+    description: "R2 endpoint for rclone."
+    required: false
+  rclone_r2_acl:
+    description: "R2 ACL for rclone."
+    required: false
+  rclone_gdrive_client_id:
+    description: "Google Drive client ID for rclone."
+    required: false
+  rclone_gdrive_client_secret:
+    description: "Google Drive client secret for rclone."
+    required: false
+  rclone_gdrive_scope:
+    description: "Google Drive scope for rclone."
+    required: false
+  rclone_gdrive_token:
+    description: "Google Drive token for rclone."
+    required: false
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'

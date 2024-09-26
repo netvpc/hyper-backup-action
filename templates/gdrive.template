@@ -1,0 +1,6 @@
+[gdrive]
+type = drive
+client_id = {{RCLONE_GDRIVE_CLIENT_ID}}
+client_secret = {{RCLONE_GDRIVE_CLIENT_SECRET}}
+scope = {{RCLONE_GDRIVE_SCOPE:-drive}}
+token = {{RCLONE_GDRIVE_TOKEN}}

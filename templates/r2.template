@@ -1,0 +1,9 @@
+[r2]
+type = s3
+provider = Cloudflare
+env_auth = false
+access_key_id = {{RCLONE_R2_ACCESS_KEY_ID}}
+secret_access_key = {{RCLONE_R2_SECRET_ACCESS_KEY}}
+region = {{RCLONE_R2_REGION}}
+endpoint = {{RCLONE_R2_ENDPOINT}}
+acl = {{RCLONE_R2_ACL}}
