@@ -103,7 +103,7 @@ perform_backup() {
             INPUT_AUTH_DB="${INPUT_AUTH_DB:-admin}"
             [[ -n "$INPUT_DB_PASS" ]] && INPUT_PASS="-p${INPUT_DB_PASS}"
             FILENAME="${BACKUP_DIR}/${db_type}-${INPUT_DB_NAME}.${THEDATE}.gz"
-            BACKUP_CMD="mongodump --gzip --archive=\"$FILENAME\" --port=$INPUT_DB_PORT -d $INPUT_DB_NAME -u $INPUT_DB_USER $INPUT_PASS --authenticationDatabase=$INPUT_AUTH_DB $INPUT_ARGS"
+            BACKUP_CMD="mongodump --gzip --archive=\"$FILENAME\" --host=$INPUT_DB_HOST --port=$INPUT_DB_PORT -d $INPUT_DB_NAME -u $INPUT_DB_USER $INPUT_PASS --authenticationDatabase=$INPUT_AUTH_DB $INPUT_ARGS"
             ;;
         postgres)
             INPUT_DB_PORT="${INPUT_DB_PORT:-5432}"
