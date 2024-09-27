@@ -101,9 +101,10 @@ perform_backup() {
         mongo)
             INPUT_DB_PORT="${INPUT_DB_PORT:-27017}"
             INPUT_AUTH_DB="${INPUT_AUTH_DB:-admin}"
-            [[ -n "$INPUT_DB_PASS" ]] && INPUT_PASS="-p${INPUT_DB_PASS}"
+            [[ -n "$INPUT_DB_PASS" ]] && INPUT_PASS="-p\"${INPUT_DB_PASS}\""
             FILENAME="${BACKUP_DIR}/${db_type}-${INPUT_DB_NAME}.${THEDATE}.gz"
             BACKUP_CMD="mongodump --gzip --archive=\"$FILENAME\" --host=$INPUT_DB_HOST --port=$INPUT_DB_PORT -d $INPUT_DB_NAME -u $INPUT_DB_USER $INPUT_PASS --authenticationDatabase=$INPUT_AUTH_DB $INPUT_ARGS"
+            echo "🔧 실행되는 백업 명령어: $BACKUP_CMD"
             ;;
         postgres)
             INPUT_DB_PORT="${INPUT_DB_PORT:-5432}"
@@ -185,3 +186,17 @@ fi
 echo "📂 백업 파일 위치: ${BACKUP_DIR}"
 echo "🔍 백업 파일 목록:"
 ls -lhS "${BACKUP_DIR}/"
+
+#----------------------------------------
+# Cleanup: 백업 파일 및 설정 파일 삭제 (INPUT_BACKUP_TYPE이 "db"인 경우)
+#----------------------------------------
+if [[ "$INPUT_BACKUP_TYPE" == "db" ]]; then
+    echo "🧹 백업 및 설정 파일을 삭제 중입니다..."
+    rm -f "${FILENAME}"            # 백업 파일 삭제
+    rm -f "${config_file}"         # rclone 설정 파일 삭제
+    rm -rf "${BACKUP_DIR}"         # 백업 디렉토리 삭제
+    rm -rf "${CONFIG_DIR}"         # 설정 디렉토리 삭제
+    echo "✅ 파일 삭제 완료. 모든 작업이 끝났습니다."
+else
+    echo "⚠️ 백업 유형이 'db'가 아니므로 파일 삭제를 건너뜁니다."
+fi
