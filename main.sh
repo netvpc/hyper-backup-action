@@ -101,10 +101,13 @@ perform_backup() {
         mongo)
             INPUT_DB_PORT="${INPUT_DB_PORT:-27017}"
             INPUT_AUTH_DB="${INPUT_AUTH_DB:-admin}"
-            [[ -n "$INPUT_DB_PASS" ]] && INPUT_PASS="-p\"${INPUT_DB_PASS}\""
-            FILENAME="${BACKUP_DIR}/${db_type}-${INPUT_DB_NAME}.${THEDATE}.gz"
-            BACKUP_CMD="mongodump --gzip --archive=\"$FILENAME\" --host=$INPUT_DB_HOST --port=$INPUT_DB_PORT -d $INPUT_DB_NAME -u $INPUT_DB_USER $INPUT_PASS --authenticationDatabase=$INPUT_AUTH_DB $INPUT_ARGS"
-            echo "🔧 실행되는 백업 명령어: $BACKUP_CMD"
+            [[ -n "$INPUT_DB_PASS" ]] && INPUT_PASS="${INPUT_DB_PASS}"
+            FILENAME="${BACKUP_DIR}/${db_type}-${INPUT_DB_NAME}.${THEDATE}.sql.gz"
+            if [[ "$INPUT_DB_HOST" == *"mongodb.net"* ]]; then
+                BACKUP_CMD="mongodump --gzip --archive=\"$FILENAME\" --uri=\"mongodb+srv://$INPUT_DB_USER:$INPUT_PASS@$INPUT_DB_HOST/$INPUT_DB_NAME\" --authenticationDatabase=$INPUT_AUTH_DB $INPUT_ARGS"
+            else
+                BACKUP_CMD="mongodump --gzip --archive=\"$FILENAME\" --host=$INPUT_DB_HOST --port=$INPUT_DB_PORT -d $INPUT_DB_NAME -u $INPUT_DB_USER -p \"$INPUT_PASS\" --authenticationDatabase=$INPUT_AUTH_DB $INPUT_ARGS"
+            fi
             ;;
         postgres)
             INPUT_DB_PORT="${INPUT_DB_PORT:-5432}"
