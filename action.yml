@@ -29,7 +29,7 @@ inputs:
     description: 'The authentication database for MongoDB.'
     required: false
     default: 'admin'
-  args:
+  db_args:
     description: 'Additional arguments with backup command if you want to pass'
     required: false
   backup_type:

@@ -96,7 +96,7 @@ perform_backup() {
             INPUT_DB_PORT="${INPUT_DB_PORT:-3306}"
             [[ -n "$INPUT_DB_PASS" ]] && INPUT_PASS="-p${INPUT_DB_PASS}"
             FILENAME="${BACKUP_DIR}/${db_type}-${INPUT_DB_NAME}.${THEDATE}.sql.gz"
-            BACKUP_CMD="mysqldump -q -h $INPUT_DB_HOST -u $INPUT_DB_USER -P $INPUT_DB_PORT $INPUT_PASS $INPUT_ARGS $INPUT_DB_NAME | gzip -9 > \"$FILENAME\""
+            BACKUP_CMD="mysqldump -q -h $INPUT_DB_HOST -u $INPUT_DB_USER -P $INPUT_DB_PORT $INPUT_PASS $INPUT_DB_ARGS $INPUT_DB_NAME | gzip -9 > \"$FILENAME\""
             ;;
         mongo)
             INPUT_DB_PORT="${INPUT_DB_PORT:-27017}"
@@ -104,16 +104,16 @@ perform_backup() {
             [[ -n "$INPUT_DB_PASS" ]] && INPUT_PASS="${INPUT_DB_PASS}"
             FILENAME="${BACKUP_DIR}/${db_type}-${INPUT_DB_NAME}.${THEDATE}.sql.gz"
             if [[ "$INPUT_DB_HOST" == *"mongodb.net"* ]]; then
-                BACKUP_CMD="mongodump --gzip --archive=\"$FILENAME\" --uri=\"mongodb+srv://$INPUT_DB_USER:$INPUT_PASS@$INPUT_DB_HOST/$INPUT_DB_NAME\" --authenticationDatabase=$INPUT_AUTH_DB $INPUT_ARGS"
+                BACKUP_CMD="mongodump --gzip --archive=\"$FILENAME\" --uri=\"mongodb+srv://$INPUT_DB_USER:$INPUT_PASS@$INPUT_DB_HOST/$INPUT_DB_NAME\" --authenticationDatabase=$INPUT_AUTH_DB $INPUT_DB_ARGS"
             else
-                BACKUP_CMD="mongodump --gzip --archive=\"$FILENAME\" --host=$INPUT_DB_HOST --port=$INPUT_DB_PORT -d $INPUT_DB_NAME -u $INPUT_DB_USER -p \"$INPUT_PASS\" --authenticationDatabase=$INPUT_AUTH_DB $INPUT_ARGS"
+                BACKUP_CMD="mongodump --gzip --archive=\"$FILENAME\" --host=$INPUT_DB_HOST --port=$INPUT_DB_PORT -d $INPUT_DB_NAME -u $INPUT_DB_USER -p \"$INPUT_PASS\" --authenticationDatabase=$INPUT_AUTH_DB $INPUT_DB_ARGS"
             fi
             ;;
         postgres)
             INPUT_DB_PORT="${INPUT_DB_PORT:-5432}"
             export PGPASSWORD="${INPUT_DB_PASS}"
             FILENAME="${BACKUP_DIR}/${db_type}-${INPUT_DB_NAME}.${THEDATE}.pgsql.gz"
-            BACKUP_CMD="pg_dump -h $INPUT_DB_HOST -U $INPUT_DB_USER $INPUT_ARGS $INPUT_DB_NAME | gzip -9 > \"$FILENAME\""
+            BACKUP_CMD="pg_dump -h $INPUT_DB_HOST -U $INPUT_DB_USER $INPUT_DB_ARGS $INPUT_DB_NAME | gzip -9 > \"$FILENAME\""
             ;;
         *)
             echo "😔 지원하지 않는 DB 타입입니다: ${db_type}"
