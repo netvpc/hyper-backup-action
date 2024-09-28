@@ -42,7 +42,7 @@ jobs:
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
-        
+
       # Set up BuildKit Docker container builder to be able to build
       # multi-platform images and export cache
       # https://github.com/docker/setup-buildx-action
@@ -66,6 +66,18 @@ jobs:
           registry: ${{ env.REGISTRY_DOCKERHUB }}
           username: ${{ secrets.DOCKER_HUB_USER }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
+      - name: Extract Docker metadata
+        id: meta-base
+        uses: docker/metadata-action@70b2cdc6480c1a8b86edf1777157f8f437de2166
+        with:
+          images: |
+            ${{ env.REGISTRY_GHCR }}/${{ env.IMAGE_NAME }}
+            ${{ env.REGISTRY_DOCKERHUB }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=base
+            type=raw,value=base-{{date 'YYYYMMDD-HHmmss' tz='Asia/Seoul'}}
+          flavor: |
+            latest=true
 
       - name: Extract Docker metadata
         id: meta
@@ -81,6 +93,18 @@ jobs:
             type=raw,value={{date 'YYYYMMDD-HHmmss' tz='Asia/Seoul'}}
           flavor: |
             latest=true
+
+      - name: Build and push Docker image to both registries
+        id: build-and-push-base
+        uses: docker/build-push-action@e44afff3590e1d4f93b6adc72376512edb012a7c
+        with:
+          context: .
+          file: base.Dockerfile
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta-base.outputs.tags }}
+          platforms: linux/amd64, linux/arm64
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       - name: Build and push Docker image to both registries
         id: build-and-push
@@ -109,4 +133,3 @@ jobs:
         # This step uses the identity token to provision an ephemeral certificate
         # against the sigstore community Fulcio instance.
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
-
