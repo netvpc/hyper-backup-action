@@ -1,0 +1,9 @@
+[{{RCLONE_REMOTE_NAME}}]
+type = s3
+provider = AWS
+env_auth = false
+access_key_id = {{RCLONE_S3_ACCESS_KEY_ID}}
+secret_access_key = {{RCLONE_S3_SECRET_ACCESS_KEY}}
+region = {{RCLONE_S3_REGION:-us-east-1}}
+endpoint = {{RCLONE_S3_ENDPOINT}}
+acl = {{RCLONE_S3_ACL}}
