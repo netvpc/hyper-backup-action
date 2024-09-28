@@ -202,3 +202,4 @@ cleanup() {
         cat "$LOG_FILE"
     } >> "$GITHUB_STEP_SUMMARY"
 }
+
