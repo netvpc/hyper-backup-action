@@ -66,6 +66,7 @@ jobs:
           registry: ${{ env.REGISTRY_DOCKERHUB }}
           username: ${{ secrets.DOCKER_HUB_USER }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
+
       - name: Extract Docker metadata
         id: meta-base
         uses: docker/metadata-action@70b2cdc6480c1a8b86edf1777157f8f437de2166
