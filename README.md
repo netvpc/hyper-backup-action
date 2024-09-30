@@ -5,7 +5,7 @@ This GitHub Action enables you to back up databases or directories and upload th
 ## Features
 
 - **Database Backup**: Supports backing up MySQL, MongoDB, and PostgreSQL databases.
-- **Directory Backup**: Backs up specified directories. (WIP)
+- **Directory Backup**: Backs up specified directories.
 - **Rclone Integration**: Easily upload backups to cloud storage providers like Amazon S3, Cloudflare R2, and Google Drive.
 
 ## Getting Started
@@ -42,7 +42,7 @@ jobs:
           db_host: 'localhost'
           db_port: '3306'
           db_pass: '${{ secrets.DB_PASSWORD }}'
-          backup_type: 'db'
+          backup_type: 'rclone'
           remote: 's3'
           rclone_s3_access_key_id: '${{ secrets.S3_ACCESS_KEY_ID }}'
           rclone_s3_secret_access_key: '${{ secrets.S3_SECRET_ACCESS_KEY }}'
@@ -53,26 +53,40 @@ jobs:
 
 ### Inputs
 
-| **Input Name** | **Description**                                      | **Required** | **Default** |
-| -------------- | ---------------------------------------------------- | ------------ | ----------- |
-| `db_type`      | The type of the database (mysql, mongo, postgres).   | Yes          |             |
-| `db_user`      | The database user.                                   | Yes          |             |
-| `db_name`      | The database name.                                   | Yes          |             |
-| `db_host`      | The database host.                                   | No           | `localhost` |
-| `db_port`      | The database port.                                   | No           |             |
-| `db_pass`      | The database password.                               | Yes          |             |
-| `db_auth_db`   | The authentication database for MongoDB.             | No           | `admin`     |
-| `args`         | Additional arguments with backup command if needed.  | No           |             |
-| `backup_type`  | The type of backup (db or directory).                | Yes          | `db`        |
-| `dirpath`      | The directory path to back up.                       | No           |             |
-| `remote`       | The remote storage type for rclone (s3, r2, gdrive). | No           |             |
-
-For detailed information on all inputs related to `rclone` configuration for S3, R2, or Google Drive, refer to the `action.yml` file or the example above.
+| **Input Name**                | **Description**                                                          | **Required**                          | **Default**  |
+| ----------------------------- | ------------------------------------------------------------------------ | ------------------------------------- | ------------ |
+| `db_type`                     | The type of the database (`mysql`, `mongo`, `postgres`).                 | Yes                                   |              |
+| `db_string`                   | Full connection string to the database.                                  | No                                    |              |
+| `db_user`                     | The database user.                                                       | Yes (if `db_string` is not provided)  |              |
+| `db_name`                     | The database name.                                                       | Yes (if `db_string` is not provided)  |              |
+| `db_host`                     | The database host.                                                       | No                                    | `localhost`  |
+| `db_port`                     | The database port.                                                       | No                                    |              |
+| `db_pass`                     | The database password.                                                   | Yes                                   |              |
+| `db_auth_db`                  | The authentication database for MongoDB.                                 | No                                    | `admin`      |
+| `backup_type`                 | The backup type (`rclone` or `directory`).                               | Yes                                   |              |
+| `remote`                      | The remote storage type for `rclone` (e.g., `s3`, `r2`, `google_drive`). | Yes                                   |              |
+| `rclone_s3_access_key_id`     | S3 access key ID for Rclone.                                             | Yes (if using `s3`)                   |              |
+| `rclone_s3_secret_access_key` | S3 secret access key for Rclone.                                         | Yes (if using `s3`)                   |              |
+| `rclone_s3_region`            | S3 region for Rclone.                                                    | Yes (if using `s3`)                   |              |
+| `rclone_s3_endpoint`          | S3 endpoint for Rclone.                                                  | Yes (if using `s3`)                   |              |
+| `rclone_s3_acl`               | S3 ACL (Access Control List) for Rclone.                                 | No                                    | `private`    |
+| `rclone_r2_access_key_id`     | R2 access key ID for Rclone.                                             | Yes (if using `r2`)                   |              |
+| `rclone_r2_secret_access_key` | R2 secret access key for Rclone.                                         | Yes (if using `r2`)                   |              |
+| `rclone_r2_region`            | R2 region for Rclone.                                                    | Yes (if using `r2`)                   |              |
+| `rclone_r2_endpoint`          | R2 endpoint for Rclone.                                                  | Yes (if using `r2`)                   |              |
+| `rclone_r2_acl`               | R2 ACL (Access Control List) for Rclone.                                 | No                                    | `private`    |
+| `rclone_gdrive_client_id`     | Google Drive client ID for Rclone.                                       | Yes (if using `google_drive`)         |              |
+| `rclone_gdrive_client_secret` | Google Drive client secret for Rclone.                                   | Yes (if using `google_drive`)         |              |
+| `rclone_gdrive_scope`         | Google Drive scope for Rclone.                                           | No                                    |              |
+| `rclone_gdrive_token`         | Google Drive token for Rclone.                                           | Yes (if using `google_drive`)         |              |
+| `template_dir`                | Directory containing the Rclone template configuration files.            | No                                    | `/templates` |
+| `dirpath`                     | Directory path to back up (if `backup_type` is `directory`).             | Yes (if `backup_type` is `directory`) |              |
 
 ### Outputs
 
-This action does not produce any direct outputs, but it will log the backup process and report any errors encountered.
+- The action does not provide any direct outputs but will log the status and path of the backup process.
 
-## License
+### Notes
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+- The `backup_type` determines whether you are backing up a database (`db`) or a directory (`directory`).
+- Make sure you configure your `secrets` in your GitHub repository settings to securely store sensitive information like `db_pass`, `rclone_s3_access_key_id`, etc.
