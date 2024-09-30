@@ -86,6 +86,11 @@ jobs:
 
 - The action does not provide any direct outputs but will log the status and path of the backup process.
 
+### Notes
+
+- The `backup_type` determines whether you are backing up a database (`db`) or a directory (`directory`).
+- Make sure you configure your `secrets` in your GitHub repository settings to securely store sensitive information like `db_pass`, `rclone_s3_access_key_id`, etc.
+
 ---
   
   # Rclone을 활용한 하이퍼 백업 (Hyper Backup with Rclone Upload)
@@ -181,7 +186,3 @@ jobs:
 - `backup_type`에 따라 데이터베이스(`db`) 또는 디렉토리(`directory`) 백업을 선택할 수 있습니다.
 - GitHub 리포지토리 설정에서 `secrets`를 구성하여 `db_pass`, `rclone_s3_access_key_id` 등의 민감한 정보를 안전하게 저장하세요.
 
-### Notes
-
-- The `backup_type` determines whether you are backing up a database (`db`) or a directory (`directory`).
-- Make sure you configure your `secrets` in your GitHub repository settings to securely store sensitive information like `db_pass`, `rclone_s3_access_key_id`, etc.
