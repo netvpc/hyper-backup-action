@@ -9,7 +9,7 @@ set -eu
 # 필수 환경 변수를 확인하는 함수
 check_required_env() {
     local VAR_NAME=$1
-    local DISPLAY_VAR_NAME="${VAR_NAME#INPUT_}"  # INPUT_ 접두사 제거
+    local DISPLAY_VAR_NAME="${VAR_NAME#INPUT_}"   # INPUT_ 접두사 제거 (Github Actions에서 환경 변수 정의 시 INPUT_는 자동으로 추가됨)
     echo "🔍 Checking environment variable: $DISPLAY_VAR_NAME"
     if [[ -z "${!VAR_NAME:-}" ]]; then
         echo "❌ 환경 변수 '${DISPLAY_VAR_NAME}'가 설정되지 않았습니다. 이 변수는 필수입니다."
