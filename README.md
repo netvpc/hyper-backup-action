@@ -34,7 +34,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Run Database Backup
-        uses: netvpc/hyper-backup-action@v0.2.3
+        uses: netvpc/hyper-backup-action@v0.5.7
         with:
           db_type: 'mysql'
           db_user: 'your_db_user'
