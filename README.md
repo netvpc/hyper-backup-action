@@ -5,7 +5,7 @@ This GitHub Action enables you to back up databases or directories and upload th
 ## Features
 
 - **Database Backup**: Supports backing up MySQL, MongoDB, and PostgreSQL databases.
-- **Directory Backup**: Backs up specified directories.
+- **Directory Backup**: Backs up specified directories. (WIP)
 - **Rclone Integration**: Easily upload backups to cloud storage providers like Amazon S3, Cloudflare R2, and Google Drive.
 
 ## Getting Started
