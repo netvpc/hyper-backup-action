@@ -97,7 +97,7 @@ jobs:
 
       - name: Build and push Docker image to both registries
         id: build-and-push-base
-        uses: docker/build-push-action@4f58ea79222b3b9dc2c8bbdd6debcef730109a75
+        uses: docker/build-push-action@83bfd93ab480705a7b99a2ed02765137f5ab55ba
         with:
           context: .
           file: base.Dockerfile
@@ -109,7 +109,7 @@ jobs:
 
       - name: Build and push Docker image to both registries
         id: build-and-push
-        uses: docker/build-push-action@4f58ea79222b3b9dc2c8bbdd6debcef730109a75
+        uses: docker/build-push-action@83bfd93ab480705a7b99a2ed02765137f5ab55ba
         with:
           context: .
           file: Dockerfile
